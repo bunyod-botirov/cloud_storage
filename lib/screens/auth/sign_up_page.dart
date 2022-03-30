@@ -52,6 +52,7 @@ class SignUpPage extends StatelessWidget {
                     "phoneNumber": _phoneController.text,
                     "password": _passwordController.text,
                     "joinTime": FieldValue.serverTimestamp(),
+                    "photo": "",
                     "gallery": [],
                   },
                 ).then(
