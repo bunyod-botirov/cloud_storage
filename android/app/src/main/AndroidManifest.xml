@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.cloud_storage">
+    package="com.bunyod_botirov.cloud_storage">
    <application
         android:label="cloud_storage"
         android:name="${applicationName}"

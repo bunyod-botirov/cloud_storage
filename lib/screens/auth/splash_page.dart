@@ -1,7 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class SplashPage extends StatelessWidget {
-  const SplashPage({Key? key}) : super(key: key);
+  SplashPage({Key? key}) : super(key: key);
+
+  final FirebaseAuth _authUser = FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -9,14 +12,15 @@ class SplashPage extends StatelessWidget {
       const Duration(seconds: 3),
       () => Navigator.pushNamedAndRemoveUntil(
         context,
-        "/sign_in",
+        _authUser.currentUser == null ? "/sign_in" : "/home_page",
         (route) => false,
       ),
     );
-    return Scaffold(
+    return const Scaffold(
       body: Center(
         child: Text(
           "Cloud Storage",
+          style: TextStyle(fontSize: 20),
         ),
       ),
     );
