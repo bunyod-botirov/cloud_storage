@@ -1,6 +1,5 @@
 import 'package:cloud_storage/service/auth_service.dart';
 import 'package:cloud_storage/widgets/buttons_widget.dart';
-import 'package:cloud_storage/widgets/messenger_widget.dart';
 import 'package:flutter/material.dart';
 
 class SignInPage extends StatelessWidget {

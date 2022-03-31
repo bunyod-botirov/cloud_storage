@@ -9,7 +9,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:image_picker/image_picker.dart';
 
 class HomeProvider extends ChangeNotifier {
-  final List pages = [const DownloadPage(), const UploadPage()];
+  final List pages = [ DownloadPage(), const UploadPage()];
   int currentPage = 0;
 
   final FirebaseAuth _authUser = FirebaseAuth.instance;
