@@ -14,7 +14,6 @@ class UploadProvider extends ChangeNotifier {
 
   late String _photoName;
   File photo = File("");
-  List photos = [];
 
   Future choosePhoto() async {
     final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
@@ -36,12 +35,15 @@ class UploadProvider extends ChangeNotifier {
         .doc(_authUser.currentUser!.phoneNumber)
         .get();
 
-    photos = await userData.data()!["gallery"];
+    List photos = await userData.data()!["gallery"];
 
     await ref.putFile(photo).then(
       (p0) async {
         String photoURL = await p0.ref.getDownloadURL();
-        photos.add(photoURL);
+        photos.add({
+          "name": _photoName,
+          "link": photoURL,
+        });
         await _firestore
             .collection("users")
             .doc(_authUser.currentUser!.phoneNumber)

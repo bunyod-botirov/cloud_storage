@@ -3,6 +3,7 @@ import 'package:cloud_storage/screens/auth/sign_in_page.dart';
 import 'package:cloud_storage/screens/auth/sign_up_page.dart';
 import 'package:cloud_storage/screens/auth/splash_page.dart';
 import 'package:cloud_storage/screens/auth/verify_code_page.dart';
+import 'package:cloud_storage/screens/details_page.dart';
 import 'package:cloud_storage/screens/home_page.dart';
 import 'package:flutter/material.dart';
 
@@ -35,6 +36,10 @@ class AppRouter {
       case "/home_page":
         return MaterialPageRoute(
           builder: (context) => const HomePage(),
+        );
+      case "/details":
+        return MaterialPageRoute(
+          builder: (context) => DetailsPage(data: args as List),
         );
     }
 

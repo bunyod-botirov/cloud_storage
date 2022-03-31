@@ -33,17 +33,24 @@ class DownloadPage extends StatelessWidget {
                 childAspectRatio: 0.75,
               ),
               itemBuilder: (BuildContext context, int index) {
-                return Container(
-                  padding: const EdgeInsets.all(1.5),
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.black26, width: 1),
+                return InkWell(
+                  child: Container(
+                    padding: const EdgeInsets.all(1.5),
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.black26, width: 1),
+                    ),
+                    child: CachedNetworkImage(
+                      imageUrl: snapshot.data["gallery"][index]["link"],
+                      fit: BoxFit.cover,
+                      placeholder: (BuildContext context, String fileName) {
+                        return const Center(child: CircularProgressIndicator());
+                      },
+                    ),
                   ),
-                  child: CachedNetworkImage(
-                    imageUrl: snapshot.data["gallery"][index],
-                    fit: BoxFit.cover,
-                    placeholder: (BuildContext context, String fileName) {
-                      return const Center(child: CircularProgressIndicator());
-                    },
+                  onTap: () => Navigator.pushNamed(
+                    context,
+                    "/details",
+                    arguments: [snapshot.data["gallery"][index], index],
                   ),
                 );
               },
