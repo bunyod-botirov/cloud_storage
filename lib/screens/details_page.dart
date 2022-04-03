@@ -5,7 +5,6 @@ import 'package:provider/provider.dart';
 
 class DetailsPage extends StatelessWidget {
   const DetailsPage({Key? key, required this.data}) : super(key: key);
-
   final List data;
 
   @override
@@ -61,7 +60,8 @@ class DetailsPage extends StatelessWidget {
                         ),
                         onPressed: () => context
                             .read<DetailsProvider>()
-                            .downloadPhoto(_photoIndex, _photo["name"]),
+                            .downloadPhoto(
+                                context, _photo["link"], _photo["name"]),
                       ),
                     ),
                   ],

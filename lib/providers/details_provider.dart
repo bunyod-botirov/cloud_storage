@@ -1,12 +1,11 @@
-import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cloud_storage/widgets/messenger_widget.dart';
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:gallery_saver/gallery_saver.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:open_file/open_file.dart';
 
 class DetailsProvider extends ChangeNotifier {
   final FirebaseAuth _authUser = FirebaseAuth.instance;
@@ -34,22 +33,18 @@ class DetailsProvider extends ChangeNotifier {
     });
   }
 
-  Future downloadPhoto(int photoIndex, String photoName) async {
-    Directory appDocDir = await getApplicationDocumentsDirectory();
-    File downloadToFile = File('${appDocDir.path}/$photoName');
+  Future downloadPhoto(
+      BuildContext context, String photoLink, String photoName) async {
+    MessengerW.messenger(context, "Iltimos Kuting, Yuklab Olinmoqda...");
 
-    await _storage
-        .ref("${_authUser.currentUser!.phoneNumber}/$photoName")
-        .writeToFile(downloadToFile);
+    String url = photoLink;
 
-    final response = await Dio().get(
-        _storage
-            .ref("${_authUser.currentUser!.phoneNumber}/$photoName")
-            .toString(),
-        options: Options(responseType: ResponseType.bytes));
-    final raf = downloadToFile.openSync(mode: FileMode.write);
-    raf.writeFromSync(response.data);
-    await raf.close();
-    return null;
+    final tempDir = await getTemporaryDirectory();
+    final path = "${tempDir.path}/$photoName";
+
+    await Dio().download(url, path);
+
+    await GallerySaver.saveImage(path, albumName: "Cloud Storage");
+    MessengerW.messenger(context, "Muvafaqiyatli Yuklab Olindi");
   }
 }

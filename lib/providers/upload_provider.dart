@@ -25,7 +25,8 @@ class UploadProvider extends ChangeNotifier {
   }
 
   Future uploadPhoto(BuildContext context) async {
-    MessengerW.showSnackBarAsBottomSheet(context, "Yuklanmoqda...");
+    MessengerW.showSnackBarAsBottomSheet(
+        context, "Iltimos Kuting, Yuklanmoqda...");
 
     final Reference ref =
         _storage.ref("${_authUser.currentUser!.phoneNumber}/$_photoName");
