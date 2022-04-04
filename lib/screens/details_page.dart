@@ -12,22 +12,35 @@ class DetailsPage extends StatelessWidget {
     final Map _photo = data[0];
     final int _photoIndex = data[1];
 
-    return Scaffold(
-      appBar: AppBar(),
-      body: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          children: <Widget>[
-            SizedBox(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height * 0.7,
-              child: CachedNetworkImage(imageUrl: _photo["link"]),
-            ),
-            const SizedBox(height: 20),
-            ChangeNotifierProvider(
-              create: (context) => DetailsProvider(),
-              builder: (BuildContext context, Widget? child) {
-                return Row(
+    return ChangeNotifierProvider(
+      create: (context) => DetailsProvider(),
+      builder: (BuildContext context, Widget? child) {
+        return Scaffold(
+          appBar: AppBar(
+            actions: [
+              IconButton(
+                icon: const Icon(Icons.groups),
+                onPressed: () =>
+                    context.read<DetailsProvider>().controlSharePhotos(
+                          context,
+                          _photo["name"],
+                          _photo["link"],
+                          _photoIndex,
+                        ),
+              ),
+            ],
+          ),
+          body: Padding(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              children: <Widget>[
+                SizedBox(
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height * 0.7,
+                  child: CachedNetworkImage(imageUrl: _photo["link"]),
+                ),
+                const SizedBox(height: 20),
+                Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     SizedBox(
@@ -65,12 +78,12 @@ class DetailsPage extends StatelessWidget {
                       ),
                     ),
                   ],
-                );
-              },
-            )
-          ],
-        ),
-      ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }

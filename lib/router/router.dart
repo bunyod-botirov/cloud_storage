@@ -4,7 +4,9 @@ import 'package:cloud_storage/screens/auth/sign_up_page.dart';
 import 'package:cloud_storage/screens/auth/splash_page.dart';
 import 'package:cloud_storage/screens/auth/verify_code_page.dart';
 import 'package:cloud_storage/screens/details_page.dart';
+import 'package:cloud_storage/screens/get_docs_page.dart';
 import 'package:cloud_storage/screens/home_page.dart';
+import 'package:cloud_storage/screens/share_page.dart';
 import 'package:flutter/material.dart';
 
 class AppRouter {
@@ -40,6 +42,14 @@ class AppRouter {
       case "/details":
         return MaterialPageRoute(
           builder: (context) => DetailsPage(data: args as List),
+        );
+      case "/share":
+        return MaterialPageRoute(
+          builder: (context) => SharePage(),
+        );
+      case "/get_docs":
+        return MaterialPageRoute(
+          builder: (context) => const GetDocsPage(),
         );
     }
 

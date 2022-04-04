@@ -52,7 +52,9 @@ class SignUpPage extends StatelessWidget {
                     "phoneNumber": _phoneController.text,
                     "password": _passwordController.text,
                     "joinTime": FieldValue.serverTimestamp(),
+                    "canShare": false,
                     "photo": "",
+                    "sharePhotos": [],
                     "gallery": [],
                   },
                 ).then(

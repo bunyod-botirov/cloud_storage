@@ -120,6 +120,17 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
             textColor: Colors.blue,
             iconColor: Colors.blue,
             style: ListTileStyle.list,
+            leading: const Icon(Icons.share),
+            title: const Text(
+              "Share Docs",
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+            onTap: () => Navigator.pushNamed(context, "/share"),
+          ),
+          ListTile(
+            textColor: Colors.blue,
+            iconColor: Colors.blue,
+            style: ListTileStyle.list,
             leading: const Icon(Icons.question_answer),
             title: const Text(
               "Chat",
