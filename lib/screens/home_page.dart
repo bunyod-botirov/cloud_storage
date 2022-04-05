@@ -214,7 +214,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
               "Chiqish",
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
-            onTap: () => AuthService().signOut(),
+            onTap: () => AuthService().signOut(context),
           ),
         ],
       ),

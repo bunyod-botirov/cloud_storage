@@ -23,9 +23,7 @@ class DetailsPage extends StatelessWidget {
                 onPressed: () =>
                     context.read<DetailsProvider>().controlSharePhotos(
                           context,
-                          _photo["name"],
-                          _photo["link"],
-                          _photoIndex,
+                          _photo,
                         ),
               ),
             ],

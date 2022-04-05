@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cloud_storage/widgets/messenger_widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -14,6 +15,16 @@ class ShareProvider extends ChangeNotifier {
         .collection("users")
         .doc(_authUser.currentUser!.phoneNumber)
         .update({"canShare": value});
+    notifyListeners();
+  }
+
+  Future delCanSharePhotos(BuildContext context) async {
+    await _firestore
+        .collection("users")
+        .doc(_authUser.currentUser!.phoneNumber)
+        .update({"sharePhotos": []});
+    MessengerW.messenger(
+        context, "Rasmlaringiz tez orada o'chirib tashlanadi!");
     notifyListeners();
   }
 }

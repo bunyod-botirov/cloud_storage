@@ -12,12 +12,7 @@ class DetailsProvider extends ChangeNotifier {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseStorage _storage = FirebaseStorage.instance;
 
-  Future controlSharePhotos(
-    BuildContext context,
-    String photoName,
-    String photoURL,
-    int photoIndex,
-  ) async {
+  Future controlSharePhotos(BuildContext context, Map photo) async {
     bool ifContains = true;
     final DocumentSnapshot<Map> userData = await _firestore
         .collection("users")
@@ -27,15 +22,15 @@ class DetailsProvider extends ChangeNotifier {
     List sharePhotos = await userData.data()!["sharePhotos"];
 
     for (var i = 0; i < sharePhotos.length; i++) {
-      if (sharePhotos[i]["name"] == photoName) {
-        await sharePhotos.removeAt(photoIndex);
+      if (sharePhotos[i]["name"] == photo["name"]) {
+        await sharePhotos.removeAt(i);
         ifContains = false;
         break;
       }
     }
 
     if (ifContains) {
-      sharePhotos.add({"name": photoName, "link": photoURL});
+      sharePhotos.add({"name": photo["name"], "link": photo["link"]});
     }
 
     await _firestore
@@ -60,13 +55,15 @@ class DetailsProvider extends ChangeNotifier {
 
     List photos = await userData.data()!["gallery"];
 
-    photos.removeAt(photoIndex);
+    await photos.removeAt(photoIndex);
 
     await _firestore
         .collection("users")
         .doc(_authUser.currentUser!.phoneNumber)
-        .update({"gallery": photos}).whenComplete(() {
-      _storage.ref("${_authUser.currentUser!.phoneNumber}/$photoName").delete();
+        .update({"gallery": photos}).whenComplete(() async {
+      await _storage
+          .ref("${_authUser.currentUser!.phoneNumber}/$photoName")
+          .delete();
       Navigator.pop(context);
       MessengerW.messenger(context, "Rasmingiz tez orada o'chirib tashlanadi!");
     });

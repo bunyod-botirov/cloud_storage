@@ -8,6 +8,7 @@ class AuthService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   void signUpWithPhoneNumber(BuildContext context, String phoneNumber) {
+    MessengerW.messenger(context, "Loading...");
     _authUser.verifyPhoneNumber(
       phoneNumber: phoneNumber,
       verificationCompleted: (PhoneAuthCredential credential) async {
@@ -36,6 +37,7 @@ class AuthService {
 
   Future signInWithPhoneNumber(
       BuildContext context, String phoneNumber, String password) async {
+    MessengerW.messenger(context, "Loading...");
     final DocumentSnapshot<Map<String, dynamic>> data =
         await _firestore.collection("users").doc(phoneNumber).get();
 
@@ -64,7 +66,12 @@ class AuthService {
     }
   }
 
-  void signOut() {
+  void signOut(BuildContext context) {
     _authUser.signOut();
+    Navigator.pushNamedAndRemoveUntil(
+      context,
+      "/splash",
+      (route) => false,
+    );
   }
 }

@@ -57,6 +57,15 @@ class SharePage extends StatelessWidget {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
+                      trailing: IconButton(
+                        icon: const Icon(
+                          Icons.image_not_supported,
+                          color: Colors.red,
+                        ),
+                        onPressed: () => context
+                            .read<ShareProvider>()
+                            .delCanSharePhotos(context),
+                      ),
                     ),
                     Expanded(
                       child: snapshot.data["sharePhotos"].isEmpty
