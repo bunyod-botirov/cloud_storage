@@ -45,7 +45,7 @@ class AppRouter {
         );
       case "/share":
         return MaterialPageRoute(
-          builder: (context) => SharePage(),
+          builder: (context) => const SharePage(),
         );
       case "/get_docs":
         return MaterialPageRoute(

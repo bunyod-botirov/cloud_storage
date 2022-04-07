@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:cloud_storage/service/user_service.dart';
 import 'package:http/http.dart' as http;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cloud_storage/widgets/messenger_widget.dart';
@@ -23,10 +24,7 @@ class GetDocsProvider extends ChangeNotifier {
       if (anotherUserData.data()!["canShare"]) {
         if (anotherUserData.data()!["password"] == passwordController.text) {
           MessengerW.messenger(context, "Iltimos Kuting. Yuklab olinmoqda...");
-          final DocumentSnapshot<Map> userData = await _firestore
-              .collection("users")
-              .doc(_authUser.currentUser!.phoneNumber)
-              .get();
+          final DocumentSnapshot<Map> userData = await ServiceUser.getUser();
 
           List anotherUserCanSharePhotos =
               anotherUserData.data()!["sharePhotos"];
@@ -52,9 +50,7 @@ class GetDocsProvider extends ChangeNotifier {
                 "name": anotherUserCanSharePhotos[i]["name"],
                 "link": photoURL,
               });
-              await _firestore
-                  .collection("users")
-                  .doc(_authUser.currentUser!.phoneNumber)
+              await ServiceUser.getUserDoc()
                   .update({"gallery": userCanSharePhotos}).whenComplete(
                 () {
                   file = File("");

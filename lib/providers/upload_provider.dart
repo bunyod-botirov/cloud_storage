@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cloud_storage/service/user_service.dart';
 import 'package:cloud_storage/widgets/messenger_widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -8,7 +9,6 @@ import 'package:image_picker/image_picker.dart';
 
 class UploadProvider extends ChangeNotifier {
   final FirebaseAuth _authUser = FirebaseAuth.instance;
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseStorage _storage = FirebaseStorage.instance;
   final ImagePicker _picker = ImagePicker();
 
@@ -31,10 +31,7 @@ class UploadProvider extends ChangeNotifier {
     final Reference ref =
         _storage.ref("${_authUser.currentUser!.phoneNumber}/$_photoName");
 
-    final DocumentSnapshot<Map<String, dynamic>> userData = await _firestore
-        .collection("users")
-        .doc(_authUser.currentUser!.phoneNumber)
-        .get();
+    final DocumentSnapshot<Map> userData = await ServiceUser.getUser();
 
     List photos = await userData.data()!["gallery"];
 
@@ -45,10 +42,7 @@ class UploadProvider extends ChangeNotifier {
           "name": _photoName,
           "link": photoURL,
         });
-        await _firestore
-            .collection("users")
-            .doc(_authUser.currentUser!.phoneNumber)
-            .update({"gallery": photos}).whenComplete(
+        await ServiceUser.getUserDoc().update({"gallery": photos}).whenComplete(
           () {
             photo = File("");
             MessengerW.showSnackBarAsBottomSheet(

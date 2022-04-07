@@ -1,22 +1,15 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_storage/service/user_service.dart';
 import 'package:flutter/material.dart';
 
 class DownloadPage extends StatelessWidget {
-  DownloadPage({Key? key}) : super(key: key);
-
-  final FirebaseAuth _authUser = FirebaseAuth.instance;
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  const DownloadPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: FutureBuilder(
-        future: _firestore
-            .collection("users")
-            .doc(_authUser.currentUser!.phoneNumber!)
-            .get(),
+        future: ServiceUser.getUser(),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (!snapshot.hasData) {
             return const Center(child: CircularProgressIndicator());

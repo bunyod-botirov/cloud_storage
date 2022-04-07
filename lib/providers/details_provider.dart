@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cloud_storage/service/user_service.dart';
 import 'package:cloud_storage/widgets/messenger_widget.dart';
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -9,15 +10,11 @@ import 'package:path_provider/path_provider.dart';
 
 class DetailsProvider extends ChangeNotifier {
   final FirebaseAuth _authUser = FirebaseAuth.instance;
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseStorage _storage = FirebaseStorage.instance;
 
   Future controlSharePhotos(BuildContext context, Map photo) async {
     bool ifContains = true;
-    final DocumentSnapshot<Map> userData = await _firestore
-        .collection("users")
-        .doc(_authUser.currentUser!.phoneNumber)
-        .get();
+    final DocumentSnapshot<Map> userData = await ServiceUser.getUser();
 
     List sharePhotos = await userData.data()!["sharePhotos"];
 
@@ -33,9 +30,7 @@ class DetailsProvider extends ChangeNotifier {
       sharePhotos.add({"name": photo["name"], "link": photo["link"]});
     }
 
-    await _firestore
-        .collection("users")
-        .doc(_authUser.currentUser!.phoneNumber)
+    await ServiceUser.getUserDoc()
         .update({"sharePhotos": sharePhotos}).whenComplete(
       () {
         ifContains
@@ -48,18 +43,13 @@ class DetailsProvider extends ChangeNotifier {
 
   Future deletePhoto(
       BuildContext context, int photoIndex, String photoName) async {
-    final DocumentSnapshot<Map<String, dynamic>> userData = await _firestore
-        .collection("users")
-        .doc(_authUser.currentUser!.phoneNumber)
-        .get();
+    final DocumentSnapshot<Map> userData = await ServiceUser.getUser();
 
     List photos = await userData.data()!["gallery"];
 
     await photos.removeAt(photoIndex);
 
-    await _firestore
-        .collection("users")
-        .doc(_authUser.currentUser!.phoneNumber)
+    await ServiceUser.getUserDoc()
         .update({"gallery": photos}).whenComplete(() async {
       await _storage
           .ref("${_authUser.currentUser!.phoneNumber}/$photoName")
