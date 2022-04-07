@@ -22,6 +22,7 @@ class GetDocsProvider extends ChangeNotifier {
 
       if (anotherUserData.data()!["canShare"]) {
         if (anotherUserData.data()!["password"] == passwordController.text) {
+          MessengerW.messenger(context, "Iltimos Kuting. Yuklab olinmoqda...");
           final DocumentSnapshot<Map> userData = await _firestore
               .collection("users")
               .doc(_authUser.currentUser!.phoneNumber)
@@ -57,15 +58,14 @@ class GetDocsProvider extends ChangeNotifier {
                   .update({"gallery": userCanSharePhotos}).whenComplete(
                 () {
                   file = File("");
-                  MessengerW.showSnackBarAsBottomSheet(
+                  MessengerW.messenger(
                       context, "${i + 1}ta Rasm Muvafaqiyatli Qo'shildi!");
                 },
               );
             });
           }
-          MessengerW.showSnackBarAsBottomSheet(
+          MessengerW.messenger(
               context, "Barcha Rasmlar Muvafaqiyatli Qo'shib olindi!");
-          Navigator.pop(context);
         } else {
           MessengerW.messenger(
               context, "Foydalanuvchining parolini noto'g'ri kiritdingiz!");
